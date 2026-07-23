@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Expense Tracker | FareWise</title>
+  <link rel="stylesheet" href="tracker.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <img src="farewise-logo.png" alt="FareWise Logo" width="120px">
+        <span>Fare<span class="highlight">Wise</span></span>
+        </div>
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="estimate.html">Estimate Fare</a></li>
+        <li><a href="history.html">Ride History</a></li>
+        <li><a href="tracker.html" class="active">Expense Tracker</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Header -->
+  <section class="hero">
+    <div class="breadcrumb">Home &rsaquo; <span>Expense Tracker</span></div>
+    <h1>💳 Expense Tracker</h1>
+    <p>Automatically track every ride, expense and saving in one place.</p>
+  </section>
+
+  <main>
+
+    <!-- Expense Summary Cards -->
+    <section class="stats-grid" id="summaryCards">
+      <div class="stat-card">
+        <div class="stat-icon orange">💰</div>
+        <div class="stat-info">
+          <div class="stat-value" id="totalSpent">₹0</div>
+          <div class="stat-label">Total Amount Spent</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon blue">🚖</div>
+        <div class="stat-info">
+          <div class="stat-value" id="totalRides">0</div>
+          <div class="stat-label">Total Rides</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon green">📊</div>
+        <div class="stat-info">
+          <div class="stat-value" id="avgCostPerRide">₹0</div>
+          <div class="stat-label">Average Cost Per Ride</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon purple">🏆</div>
+        <div class="stat-info">
+          <div class="stat-value" id="mostUsedVehicle">--</div>
+          <div class="stat-label">Most Used Vehicle</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon blue">🛣️</div>
+        <div class="stat-info">
+            <div class="stat-value" id="totalDistance">0 km</div>
+            <div class="stat-label">Distance Travelled</div>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon orange">⏱️</div>
+        <div class="stat-info">
+            <div class="stat-value" id="totalTravelTime">0 hr</div>
+            <div class="stat-label">Travel Time</div>
+        </div>
+    </div>
+    </section>
+
+    <!-- Monthly Expense Overview -->
+    <section class="section-block" id="monthlyOverviewSection">
+      <h2 class="section-heading">Monthly Expense Overview</h2>
+      <div class="monthly-overview-container" id="monthlyOverviewContainer">
+
+    <div class="no-data-card">
+        <div class="no-data-icon">📊</div>
+        <h3>No Expense Data Yet</h3>
+        <p>
+            Estimate your first ride to start tracking your monthly transportation expenses.
+        </p>
+
+        <a href="estimate.html" class="start-btn">
+            Estimate Your First Ride
+        </a>
+    </div>
+
+</div>
+    </section>
+
+    <!-- Expense Filters -->
+    <section class="filters-bar">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchRide" placeholder="Search ride by location...">
+      </div>
+
+      <select class="filter-select" id="vehicleFilter">
+        <option value="all">All Vehicles</option>
+        <option value="auto">Auto</option>
+        <option value="cab">Cab</option>
+        <option value="bike">Bike Taxi</option>
+      </select>
+
+      <select class="filter-select" id="monthFilter">
+        <option value="all">All Months</option>
+      </select>
+
+      <select class="filter-select" id="sortFilter">
+        <option value="newest">Newest</option>
+        <option value="oldest">Oldest</option>
+        <option value="highest">Highest Fare</option>
+        <option value="lowest">Lowest Fare</option>
+      </select>
+
+      <span class="results-count" id="resultsCount">0 rides found</span>
+    </section>
+
+    <!-- Expense Table -->
+    <section class="table-container" id="expenseTableContainer">
+      <table class="expense-table" id="expenseTable">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Vehicle</th>
+            <th>Pickup</th>
+            <th>Destination</th>
+            <th>Distance</th>
+            <th>Duration</th>
+            <th>Estimated Fare</th>
+            <th>Driver Fare</th>
+            <th>Money Saved</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="expenseTableBody">
+          <!-- Rows populated dynamically by JavaScript from saved rides -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Empty State -->
+    <div class="empty-state" id="emptyState">
+      <div class="empty-icon">🚖</div>
+      <h3>No rides yet.</h3>
+      <p>Estimate your first ride to automatically start tracking your transportation expenses.</p>
+      <a href="estimate.html" class="btn-primary">Estimate Fare</a>
+    </div>
+
+    <!-- Monthly Insights Section -->
+    <section class="section-block" id="insightsSection">
+      <h2 class="section-heading">Travel Insights</h2>
+      <div class="insights-grid" id="insightsGrid">
+        <div class="insight-card">
+          <div class="insight-label">Most Expensive Ride</div>
+          <div class="insight-value" id="mostExpensiveRide">--</div>
+        </div>
+        <div class="insight-card">
+          <div class="insight-label">Cheapest Ride</div>
+          <div class="insight-value" id="cheapestRide">--</div>
+        </div>
+        <div class="insight-card">
+          <div class="insight-label">Longest Trip</div>
+          <div class="insight-value" id="longestTrip">--</div>
+        </div>
+        <div class="insight-card">
+          <div class="insight-label">Shortest Trip</div>
+          <div class="insight-value" id="shortestTrip">--</div>
+        </div>
+        <div class="insight-card">
+          <div class="insight-label">Money Saved This Month</div>
+          <div class="insight-value" id="moneySavedThisMonth">₹0</div>
+        </div>
+        <div class="insight-card">
+          <div class="insight-label">Average Daily Spending</div>
+          <div class="insight-value" id="avgDailySpending">₹0</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-block"> 
+        <h2 class="section-heading">Vehicle Usage</h2>
+        <div class="graph-placeholder">
+    <canvas id="vehicleChart"></canvas>
+</div>
+</div>
+    </section>
+
+    <section class="section-block">
+        <h2 class="section-heading">Set Monthly Budget</h2>
+        <div class="budget-input">
+            <input type="number"
+            id="monthlyBudget"
+            placeholder="Enter Monthly Budget">
+            <button id="saveBudgetBtn">Save Budget</button>
+        </div>
+    </section>
+
+    <!-- Budget Progress Section -->
+    <section class="section-block" id="budgetSection">
+      <h2 class="section-heading">Monthly Budget</h2>
+      <div class="budget-card" id="budgetCard">
+        <div class="budget-item">
+          <span class="budget-label">Budget</span>
+          <span class="budget-value" id="budgetAmount">₹0</span>
+        </div>
+        <div class="budget-item">
+          <span class="budget-label">Spent</span>
+          <span class="budget-value" id="budgetSpent">₹0</span>
+        </div>
+        <div class="budget-item">
+          <span class="budget-label">Remaining</span>
+          <span class="budget-value" id="budgetRemaining">₹0</span>
+        </div>
+        <div class="budget-progress-bar">
+          <div class="budget-progress-fill" id="budgetProgressFill" style="width:0%;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Export Section -->
+    <section class="section-block" id="exportSection">
+      <div class="export-card">
+        <h2 class="section-heading">Export Your Expense Report</h2>
+        <div class="export-buttons">
+          <button type="button" class="btn-export" id="exportCsvBtn">Export CSV</button>
+          <button type="button" class="btn-export" id="exportPdfBtn">Export PDF</button>
+          <button type="button" class="btn-export" id="exportPdfBtn">Clear History</button>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="tracker.js"></script>
+
+  <footer>
+    <h2>🚖 FareWise</h2>
+    <p>Travel Smart. Pay Fair.</p>
+    <p>© 2026 FareWise. All Rights Reserved.</p>
+  </footer>
+
+</body>
+</html>

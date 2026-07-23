@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Estimate Your Fare | FareWise</title>
+  <link rel="stylesheet" href="/frontend/estimate.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="/frontend/farewise-logo.png" alt="FareWise Logo">
+            <span>Fare<span class="highlight">Wise</span></span>
+
+            </div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="estimate.html" class="active">Estimate Fare</a></li>
+            <li><a href="history.html">Ride History</a></li>
+            <li><a href="tracker.html">Expense Tracker</a></li>
+        </ul>
+    </nav>
+  </header>
+
+  <!-- Page Header -->
+  <section class="hero">
+      <div class="breadcrumb">Home &rsaquo; <span>Estimate Fare</span></div>
+      <h1>💵 Estimate Your Fare</h1>
+      <p>Enter your trip details to instantly estimate a fair fare and avoid overpaying.</p>
+    </section>
+
+  <!-- Estimate Form -->
+  <section class="estimate-section">
+    <div class="form-container">
+
+      <!-- Vehicle Type -->
+      <div class="form-group">
+        <label>Vehicle Type</label>
+        <div class="vehicle-selector">
+            <div class="vehicle-card active"> 
+                <div class="vehicle-icon">🛺</div>
+                <h3>Auto</h3>
+                <p>Affordable city rides</p>
+            </div>
+            <div class="vehicle-card">
+                <div class="vehicle-icon">🚕</div>
+                <h3>Cab</h3>
+                <p>Comfortable travel</p>
+            </div>
+            <div class="vehicle-card">
+                <div class="vehicle-icon">🏍️</div>
+                <h3>Bike Taxi</h3>
+                <p>Fastest commute</p>
+            </div>
+        </div>
+      </div>
+
+     <!-- Pickup Location -->
+<div class="form-group">
+    <label for="pickup">📍 Pickup Location</label>
+
+    <input
+    id="pickup"
+    placeholder="Enter pickup">
+    <div id="pickupSuggestions" class="suggestions"></div>
+</div>
+
+<!-- Travel Arrow -->
+<div class="travel-arrow">
+    <div class="arrow-circle">
+        ↓
+    </div>
+</div>
+
+<!-- Destination -->
+<div class="form-group">
+    <label for="destination">🏁 Destination</label>
+
+    <input
+    id="destination"
+    placeholder="Enter pickup">
+    <div id="destinationSuggestions"
+    class="suggestions"></div>
+</div>
+
+<!-- Traffic Level -->
+      <div class="form-group">
+        <label for="traffic">🚥 Traffic Level</label>
+        <select id="traffic">
+          <option value="">Select traffic level</option>
+          <option value="low">Low – Free flowing roads</option>
+          <option value="moderate">Moderate – Some congestion</option>
+          <option value="high">High – Heavy traffic</option>
+        </select>
+      </div>
+
+      <div class="map-section">
+    <h2>🗺️ Route Map</h2>
+    <div id="map"></div>
+</div>
+
+<!-- Calculate Distance Button -->
+<div class="distance-button-container">
+
+    <button
+        type="button"
+        class="distance-btn"
+        onclick="calculateDistance()">
+        📍 Calculate Distance
+    </button>
+
+</div>
+
+
+<!-- Journey Summary -->
+<div class="journey-summary">
+
+    <h3>🧭 Journey Summary</h3>
+
+    <div class="journey-card">
+
+        <!-- Distance -->
+        <div class="journey-item">
+            <div class="journey-icon">📏</div>
+            <span class="journey-label">Distance</span>
+            <span id="distanceDisplay">-- km</span>
+        </div>
+        <!-- Time -->
+        <div class="journey-item">
+            <div class="journey-icon">⏱</div>
+            <span class="journey-label">Estimated Time</span>
+            <span id="timeDisplay">-- mins</span>
+        </div>
+        <!-- Traffic -->
+        <div class="journey-item">
+            <div class="journey-icon">🚦</div>
+            <span class="journey-label">Traffic</span>
+            <span id="trafficDisplay">--</span>
+        </div>
+    </div>
+</div>
+
+      <!-- Time of Day -->
+      <div class="form-group">
+        <label for="timeofday">Time of Day</label>
+        <select id="timeofday">
+          <option value="">Select time of day</option>
+          <option value="morning">Morning (6AM – 9AM)</option>
+          <option value="peak">Peak Hours (9AM – 11AM / 5PM – 8PM)</option>
+          <option value="afternoon">Afternoon (11AM – 5PM)</option>
+          <option value="night">Night (8PM – 11PM)</option>
+          <option value="latenight">Late Night (11PM – 6AM)</option>
+        </select>
+      </div>
+
+      
+
+      <!-- Driver Quoted Fare -->
+      <div class="form-group">
+        <label for="quotedFare">Driver's Quoted Fare (₹) <span class="optional">optional – for overcharge check</span></label>
+        <input type="number" id="quotedFare" placeholder="e.g. 150" min="0" />
+      </div>
+
+      <!-- Submit Button -->
+<button
+    id="calculateFareBtn"
+    type="button"
+    class="estimate-btn">
+    ✨ Calculate Fair Fare
+</button>
+
+
+    </div>
+
+    <!-- Result Section -->
+     <div class="result-container" id="resultContainer" style="display:none;">
+
+      <!-- Price Range -->
+      <div class="result-card">
+        <h2>💰 Estimated Fair Fare</h2>
+        <div class="price-range">
+          <div class="price-box">
+            <span class="price-label">Minimum</span>
+            <span class="price-value" id="minFare">₹0</span>
+          </div>
+          <div class="price-divider">–</div>
+          <div class="price-box">
+            <span class="price-label">Maximum</span>
+            <span class="price-value" id="maxFare">₹0</span>
+          </div>
+        </div>
+        <p class="price-note" id="priceNote"></p>
+      </div>
+
+      <!-- Overcharge Warning -->
+      <div class="result-card" id="overchargeCard" style="display:none;">
+        <h2>🛡️ Overcharge Analysis</h2>
+        <div class="overcharge-status" id="overchargeStatus"></div>
+        <p class="overcharge-detail" id="overchargeDetail"></p>
+      </div>
+
+      <!-- Negotiation Tip -->
+      <div class="result-card tip-card">
+        <h2>🤝 Smart Negotiation Tip</h2>
+        <p id="negotiationTip"></p>
+      </div>
+     </div>
+
+    </div>
+  </section>
+
+<!-- Footer -->
+  <footer>
+    <div class="footer-logo">
+        <img src="farewise-logo.png" class="footer-img">
+        <h2>FareWise</h2>
+    </div>
+    <p class="footer-tagline">
+        Travel Smart. Pay Fair.
+    </p>
+    <p class="copyright">
+        © 2026 FareWise. All Rights Reserved.
+    </p>
+  </footer>
+
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="/frontend/estimate.js"></script>
+</body>
+</html>

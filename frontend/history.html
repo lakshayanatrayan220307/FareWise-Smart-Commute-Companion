@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ride History – FareWise</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="history.css" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="logo">
+    <img src="farewise-logo.png" alt="FareWise Logo" class="nav-logo">
+                <span>Fare<span class="highlight">Wise</span></span>
+
+</div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="estimate.html">Estimate Fare</a></li>
+      <li><a href="history.html" class="active">Ride History</a></li>
+      <li><a href="tracker.html">Expense Tracker</a></li>
+    </ul>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div class="breadcrumb">Home &rsaquo; <span>Ride History</span></div>
+      <h1>🕐 Ride History</h1>
+      <p>View all your fare estimates, travel records and savings in one place.</p>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon blue">🚗</div>
+        <div class="stat-info">
+          <div class="stat-value" id="totalRides">0</div>
+<div class="stat-label">Total Rides</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon orange">💰</div>
+        <div class="stat-info">
+          <div class="stat-value" id="moneySaved">₹0</div>
+<div class="stat-label">Money Saved</div>
+        </div>
+      </div>
+      <div class="stat-card">
+    <div class="stat-icon green">📊</div>
+    <div class="stat-info">
+        <div class="stat-value" id="averageFare">₹0</div>
+        <div class="stat-label">Average Fare</div>
+    </div>
+</div>
+      <div class="stat-card">
+        <div class="stat-icon purple">🏍️</div>
+        <div class="stat-info">
+         <div class="stat-value" id="favoriteVehicle">--</div>
+          <div class="stat-label">Favourite Vehicle</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-bar">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Search by location or vehicle..." oninput="filterRides()" />
+      </div>
+      <select class="filter-select" id="vehicleFilter" onchange="filterRides()">
+        <option value="all">All Vehicles</option>
+        <option value="auto">🛺 Auto Rickshaw</option>
+        <option value="cab">🚕 Cab</option>
+        <option value="bike">🏍️ Bike Taxi</option>
+      </select>
+      <select class="filter-select" id="sortFilter" onchange="filterRides()">
+        <option value="newest">Sort: Newest First</option>
+        <option value="oldest">Sort: Oldest First</option>
+        <option value="fare-high">Sort: Fare High–Low</option>
+        <option value="fare-low">Sort: Fare Low–High</option>
+      </select>
+      <span class="results-count" id="resultsCount">
+Showing 0 rides
+</span>
+    </div>
+
+    <!-- Rides Grid -->
+    <div class="rides-grid" id="ridesGrid"></div>
+
+    <!-- Empty State -->
+    <div class="empty-state" id="emptyState">
+    <div class="empty-icon">🛺</div>
+    <h3>No Ride History Yet</h3>
+    <p>
+        Your estimated rides will automatically appear here after you calculate your first fare.
+    </p>
+    <a href="estimate.html" class="btn-primary">
+    Estimate Your First Fare
+    </a>
+</div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-logo">
+        <img src="farewise-logo.png" class="footer-img">
+        <h2>FareWise</h2>
+    </div>
+    <p class="footer-tagline">
+        Travel Smart. Pay Fair.
+    </p>
+    <p class="copyright">
+        © 2026 FareWise. All Rights Reserved.
+    </p>
+  </footer>
+  <script src="history.js"></script>
+
+</body>
+</html>
