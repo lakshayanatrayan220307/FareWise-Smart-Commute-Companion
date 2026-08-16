@@ -400,7 +400,7 @@ async function saveRide() {
     };
     try {
         const response = await fetch(
-            'http://127.0.0.1:5000/api/rides',
+            'https://farewise-backend.onrender.com/api/rides',
             {
                 method: 'POST',
                 headers: {
