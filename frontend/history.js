@@ -13,8 +13,8 @@ let rides = [];
 async function loadRidesFromDatabase() {
     try {
         const response = await fetch(
-            'http://127.0.0.1:5000/api/rides'
-        );
+    'https://farewise-backend.onrender.com/api/rides'
+);
         const data = await response.json();
         rides = data.map(ride => ({
             id: ride.id,
@@ -316,11 +316,11 @@ async function deleteRide(id){
         return;
     try{
         const response = await fetch(
-            `http://127.0.0.1:5000/api/rides/${id}`,
-            {
-                method:"DELETE"
-            }
-        );
+    `https://farewise-backend.onrender.com/api/rides/${id}`,
+    {
+        method:"DELETE"
+    }
+);
         if(response.ok){
             // Remove from local array
             rides = rides.filter(r => r.id !== id);
