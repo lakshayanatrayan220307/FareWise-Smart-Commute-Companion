@@ -10,8 +10,8 @@ let rides = [];
 async function fetchRidesFromAPI(){
     try{
         const response = await fetch(
-            'http://127.0.0.1:5000/api/rides'
-        );
+    'https://farewise-backend.onrender.com/api/rides'
+);
         const data = await response.json();
         rides = data.map(ride => ({
             id: ride.id,
@@ -641,7 +641,7 @@ Time : ${ride.time}`
 // ----------------------------------------------------------
 // DELETE RIDE
 // ----------------------------------------------------------
-function deleteRide(index){
+async function deleteRide(index){
     if(
         !confirm(
             "Delete this ride from Expense Tracker?"
@@ -649,15 +649,36 @@ function deleteRide(index){
     ){
         return;
     }
-    rides.splice(index,1);
-    saveRides();
-    updateSummaryCards();
-    renderMonthlyOverview();
-    updateInsights();
-    loadMonthFilter();
-    filterRides();
-    updateBudgetCard();
-    renderVehicleChart();
+
+    const ride = rides[index];
+
+    try{
+        const response = await fetch(
+            `https://farewise-backend.onrender.com/api/rides/${ride.id}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        if(!response.ok){
+            throw new Error("Failed to delete ride");
+        }
+
+        // Remove from current page after database deletion
+        rides.splice(index,1);
+
+        updateSummaryCards();
+        renderMonthlyOverview();
+        updateInsights();
+        loadMonthFilter();
+        filterRides();
+        updateBudgetCard();
+        renderVehicleChart();
+
+    }catch(error){
+        console.error("Delete error:", error);
+        alert("Unable to delete ride from database.");
+    }
 }
 // ----------------------------------------------------------
 // CLEAR HISTORY
