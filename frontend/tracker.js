@@ -684,7 +684,8 @@ async function deleteRide(index){
 // CLEAR HISTORY
 // ----------------------------------------------------------
 document.querySelectorAll(".btn-export")[2]
-.addEventListener("click",()=>{
+.addEventListener("click", async ()=>{
+    
     if(
         !confirm(
             "Delete ALL ride history?"
@@ -692,16 +693,48 @@ document.querySelectorAll(".btn-export")[2]
     ){
         return;
     }
-    rides=[];
-    saveRides();
-    updateSummaryCards();
-    renderMonthlyOverview();
-    updateInsights();
-    loadMonthFilter();
-    filterRides();
-    updateBudgetCard();
-    renderVehicleChart();
-    alert("History Cleared.");
+
+    try{
+
+        // Delete every ride from Render database
+        for(const ride of rides){
+
+            const response = await fetch(
+                `https://farewise-backend.onrender.com/api/rides/${ride.id}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+            if(!response.ok){
+                throw new Error("Failed to delete ride");
+            }
+        }
+
+        // Clear current page
+        rides = [];
+
+        updateSummaryCards();
+        renderMonthlyOverview();
+        updateInsights();
+        loadMonthFilter();
+        filterRides();
+        updateBudgetCard();
+        renderVehicleChart();
+
+        alert("History Cleared Successfully.");
+
+    }catch(error){
+
+        console.error(
+            "Clear history error:",
+            error
+        );
+
+        alert(
+            "Unable to clear ride history from database."
+        );
+    }
 });
 // ----------------------------------------------------------
 // EXPORT CSV
